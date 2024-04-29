@@ -1,0 +1,9 @@
+name: covid
+run-name: Setting up real time data that tracks covid test orders by the CDC data
+on: [push]
+jobs: 
+    test-output:
+        runs-on: ubuntu-latest
+        steps:
+        - name: test
+          run: echo "test"
