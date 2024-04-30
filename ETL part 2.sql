@@ -1,0 +1,15 @@
+CREATE VIEW CALENDAR_VIEW AS
+SELECT DISTINCT
+TDate,
+DATENAME (WEEKDAY, TDate) AS DayOfWeek,
+DATEPART (DAY, TDate) AS DayOfMonth,
+DATENAME (MONTH, TDate) AS Month,
+DATEPART (QUARTER, TDate) AS Quarter,
+DATEPART (YEAR, TDate) AS Year
+from SALESTRANSACTION;
+
+CREATE VIEW PRODUCT_View AS
+SELECT ProductID, ProductName, ProductPrice, VendorName, CategoryName
+FROM PRODUCT, VENDOR, CATEGORY
+WHERE Product.VendorID = Vendor.VendorID
+AND Product.CategoryID = Category.CategoryID;

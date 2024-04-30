@@ -1,0 +1,136 @@
+CREATE TABLE REGION (
+RegionID	Char(1)	NOT NULL,
+RegionName	Char(20)	NOT NULL,
+CONSTRAINT REGION_PK PRIMARY KEY (RegionID)
+);
+
+CREATE TABLE CATEGORY (
+CategoryID	Char(2)	NOT NULL,
+CategoryName	Char(15)	NOT NULL,
+CONSTRAINT CAT_PK PRIMARY KEY (CategoryID)
+);
+
+CREATE TABLE VENDOR (
+VendorID	Char(2)	NOT NULL,
+VendorName	Char(20)	NOT NULL,
+CONSTRAINT VENDOR_PK PRIMARY KEY (VendorID)
+);
+
+CREATE TABLE STORE (
+StoreID	Char(2)	NOT NULL,
+StoreZip	Char(5)	NOT NULL,
+RegionID	Char(1)	NOT NULL,
+CONSTRAINT STORE_PK PRIMARY KEY (StoreID),
+CONSTRAINT REGION_FK FOREIGN KEY (RegionID)
+REFERENCES REGION (RegionID)
+);
+
+CREATE TABLE CUSTOMER (
+CustomerID	Char(10)	NOT NULL,
+CustomerName	Char(15)	NOT NULL,
+CustomerZip	Char(5)	NOT NULL,
+CONSTRAINT CUST_PK PRIMARY KEY (CustomerID)
+);
+
+CREATE TABLE PRODUCT (
+ProductID	Char(3)	NOT NULL,
+ProductName	Char(20)	NOT NULL,
+ProductPrice	numeric(7, 2)	NOT NULL,
+VendorID	Char(2)	NOT NULL,
+CategoryID	Char(2)	NOT NULL,
+CONSTRAINT PRODUCT_PK PRIMARY KEY (ProductID),
+CONSTRAINT VENDOR_FK FOREIGN KEY (VendorID)
+REFERENCES VENDOR (VendorID),
+CONSTRAINT CATEGORY_FK FOREIGN KEY (CategoryID)
+REFERENCES CATEGORY (CategoryID)
+);
+
+CREATE TABLE SALES_TRANSACTIONS (
+TID	Char(4)	NOT NULL,
+CustomerID	Char(10)	NOT NULL,
+StoreID	Char(2)	NOT NULL,
+TDate	Date	NOT NULL,
+CONSTRAINT TID_PK PRIMARY KEY (TID),
+CONSTRAINT CUST_FK FOREIGN KEY (CustomerID)
+REFERENCES CUSTOMER (CustomerID),
+CONSTRAINT STORE_FK FOREIGN KEY (StoreID)
+REFERENCES STORE (StoreID)
+);
+
+CREATE TABLE INCLUDES (
+ProductID	Char(3)	NOT NULL,
+TID	Char(4)	NOT NULL,
+Quantity	Int	NOT NULL,
+CONSTRAINT INCLUDES_PK PRIMARY KEY (ProductID, TID),
+CONSTRAINT PROD_FK FOREIGN KEY (ProductID)
+REFERENCES PRODUCT (ProductID),
+CONSTRAINT TID_FK FOREIGN KEY (TID)
+REFERENCES SALES_TRANSACTIONS (TID)
+);
+
+INSERT INTO REGION (RegionID, RegionName)
+VALUES ('C', 'Chicagoland'),
+('T', 'Tristate')
+;
+
+INSERT INTO STORE (StoreID, StoreZip, RegionID)
+VALUES ('S1', '60600', 'C'),
+('S2', '60605', 'C'),
+('S3', '35400', 'T')
+;
+
+INSERT INTO CATEGORY (CategoryID, CategoryName)
+VALUES ('CP', 'Camping'),
+('FW', 'Footware')
+;
+
+INSERT INTO VENDOR (VendorID, VendorName)
+VALUES ('PG', 'Pacific Gear'),
+('MK', 'Mountain King')
+;
+
+INSERT INTO CUSTOMER (CustomerID, CustomerName, CustomerZip)
+VALUES ('1-2-333', 'Tina', '60137'),
+('2-3-444', 'Tony', '60611'),
+('3-4-555', 'Pam', '35401')
+;
+
+INSERT INTO PRODUCT (ProductID, ProductName, ProductPrice, VendorID, CategoryID)
+VALUES ('1X1', 'Zzz Bag', 100, 'PG', 'CP'),
+('2X2', 'Easy Boot', 70, 'MK', 'FW'),
+('3X3', 'Cosy Sock', 15, 'MK', 'FW'),
+('4X4', 'Dura Boot', 90, 'PG', 'FW'),
+('5X5', 'Tiny Tent', 150, 'MK', 'CP'),
+('6X6', 'Biggy Tent', 250, 'MK', 'CP')
+;
+
+INSERT INTO SALES_TRANSACTIONS (TID, CustomerID, StoreID, TDate)
+VALUES ('T111', '1-2-333', 'S1', '2020-01-01'),
+('T222', '2-3-444', 'S2', '2020-01-01'),
+('T333', '1-2-333', 'S3', '2020-01-02')
+;
+
+INSERT INTO INCLUDES (ProductID, TID, Quantity)
+VALUES ('1X1', 'T111', 1),
+('2X2', 'T222', 1),
+('3X3', 'T333', 5),
+('1X1', 'T333', 1)
+;
+
+SELECT *
+FROM PRODUCT
+WHERE ProductName LIKE '%Tent%';
+
+SELECT *
+FROM PRODUCT
+WHERE ProductPrice < 30;
+
+SELECT STORE.*
+FROM REGION, STORE
+WHERE REGION.RegionID = STORE.RegionID
+AND RegionName IN ('Indiana', 'Chicagoland');
+
+
+
+
+
