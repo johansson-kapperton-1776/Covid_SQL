@@ -81,3 +81,30 @@ CONSTRAINT	ASSIGN_EMP_FK FOREIGN KEY (EmployeeNumber)
 REFERENCES EMPLOYEE (EmployeeNumber)
 );
 
+INSERT INTO DEPARTMENT (DepartmentName, BudgetCode, OfficeNumber, DepartmentPhone)
+VALUES
+('Administration', 'BC-100-10', 'BLDG01-210', '360-285-8100'),
+('Finance','BC-100-11', 'BLDG01-210', '360-285-8200'),
+('HR', 'BC-100-10', 'BLDG01-210', '360-285-8100')
+;
+
+INSERT INTO EMPLOYEE (FirstName, LastName, Department, Position, OfficePhone, EmailAddress)
+VALUES
+('Linda', 'Granger', 'Administration', 'SM2', '360-285-8520', 'Linda.Granger@WP.com'),
+('Sam', 'Brown', 'Finance', 'SM3', '360-285-8540', 'Sam.Brown@WP.com'),
+('Mary', 'Smith','HR', 'SM4', '360-285-8550', 'Mary.Smith@WP.com')
+;
+
+INSERT INTO PROJECT (ProjectName, Department, MaxHours, StartDate, EndDate)
+VALUES
+('2019 Administration Plan', 'Administration', 100.00, '2019-05-10', '2019-06-15'),
+('2019 Finance Plan', 'Finance', 200.00, '2019-05-10', '2019-07-15'),
+('2019 HR Plan', 'HR', 300.00, '2019-05-10', '2019-08-15')
+;
+
+INSERT INTO ASSIGNMENT (ProjectID, EmployeeNumber, HoursWorked)
+VALUES
+(1000, 1, 30.00),
+(1100, 2, 34.00),
+(1200, 3, 40.00)
+;
